@@ -362,6 +362,8 @@ if (URHO3D_CSHARP)
     message(STATUS "NuGet restore")
     message(STATUS ${MSBUILD})
     message(STATUS ${VS_SOLUTIONS})
+    FILE(READ "/home/vsts/.config/NuGet/NuGet.Config" contents)
+    message(STATUS ${contents})
     execute_process(
         COMMAND ${TERM_WORKAROUND} ${MSBUILD} ${VS_SOLUTIONS} /t:restore /m /nologo
         /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/ /consoleloggerparameters:ErrorsOnly
