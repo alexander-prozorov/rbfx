@@ -51,7 +51,12 @@ jobs:
           sudo update-alternatives --set c++ /usr/bin/$(CXX)
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
-        
+      
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: 
+
       - task: CmdLine@2
         inputs:
           script: 'dotnet --version'
