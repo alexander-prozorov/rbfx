@@ -56,10 +56,6 @@ jobs:
         inputs:
           packageType: 'sdk'
           version: 
-
-      - task: CmdLine@2
-        inputs:
-          script: 'dotnet --version'
     
       - task: CMake@1
         displayName: Generate
