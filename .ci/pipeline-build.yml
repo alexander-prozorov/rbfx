@@ -51,14 +51,14 @@ jobs:
           sudo update-alternatives --set c++ /usr/bin/$(CXX)
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
+      
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: 
 
       - task: CMake@1
         displayName: Generate
         inputs:
           workingDirectory: cmake-build
           cmakeArgs: $(CMAKE_GENERATE_ARGS) -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/SDK -DCMAKE_BUILD_TYPE=RelWithDebInfo -DURHO3D_SAMPLES=ON -DURHO3D_CSHARP=$(URHO3D_CSHARP) -DURHO3D_PACKAGING=ON -DBUILD_SHARED_LIBS=$(BUILD_SHARED_LIBS) $(Build.SourcesDirectory)
-    
-
-      - task: CmdLine@2
-        inputs:
-          script: 'cat /home/vsts/.config/NuGet/NuGet.Config'
