@@ -52,6 +52,13 @@ jobs:
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
 
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'current'
+          downloadType: 'specific'
+          itemPattern: '/home/vsts/.config/NuGet/NuGet.Config'
+          downloadPath: '$(System.ArtifactsDirectory)'
+
       - task: CMake@1
         displayName: Generate
         inputs:
