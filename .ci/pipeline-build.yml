@@ -24,11 +24,6 @@ jobs:
 
     strategy:
       matrix:
-        shared-gcc-opengl:
-          CC: gcc-8
-          CXX: g++-8
-          BUILD_SHARED_LIBS: ON
-          EXTRA_PACKAGES: gcc-8 g++-8 mono-devel msbuild-libhostfxr msbuild-sdkresolver msbuild
         shared-clang-opengl:
           BUILD_SHARED_LIBS: ON
           CMAKE_GENERATE_ARGS: -DTRACY_NO_PARALLEL_ALGORITHMS=ON
