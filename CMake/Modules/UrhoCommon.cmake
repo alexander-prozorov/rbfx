@@ -360,6 +360,8 @@ if (URHO3D_CSHARP)
     add_msbuild_target(TARGET NugetRestore EXCLUDE_FROM_ALL ARGS ${VS_SOLUTIONS} /t:restore /m)
     # Run nuget restore during generation stage
     message(STATUS "NuGet restore")
+    message(STATUS ${MSBUILD})
+    message(STATUS ${VS_SOLUTIONS})
     execute_process(
         COMMAND ${TERM_WORKAROUND} ${MSBUILD} ${VS_SOLUTIONS} /t:restore /m /nologo
         /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/ /consoleloggerparameters:ErrorsOnly
