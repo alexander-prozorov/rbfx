@@ -52,11 +52,9 @@ jobs:
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
     
-      - task: UseDotNet@2
+      - task: NuGetToolInstaller@1
         inputs:
-          packageType: 'sdk'
-          version: 
-
+          versionSpec: 
       - task: CMake@1
         displayName: Generate
         inputs:
