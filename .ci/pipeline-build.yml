@@ -52,10 +52,6 @@ jobs:
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
     
-      - task: UseDotNet@2
-        inputs:
-          packageType: 'sdk'
-          version: 
       - task: CMake@1
         displayName: Generate
         inputs:
