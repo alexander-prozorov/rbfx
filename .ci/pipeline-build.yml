@@ -52,9 +52,8 @@ jobs:
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
     
-      - task: NuGetToolInstaller@1
-        inputs:
-          versionSpec: 
+
+
       - task: CMake@1
         displayName: Generate
         inputs:
