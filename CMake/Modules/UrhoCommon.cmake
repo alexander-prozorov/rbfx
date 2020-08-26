@@ -362,6 +362,9 @@ if (URHO3D_CSHARP)
     message(STATUS "NuGet restore")
     execute_process(
         COMMAND ${TERM_WORKAROUND} ${MSBUILD} ${VS_SOLUTIONS} /t:restore /m /nologo
+        /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/ /consoleloggerparameters:ErrorsOnly
+        RESULT_VARIABLE NUGET_RESTORE_RESULT
+        OUTPUT_VARIABLE NUGET_RESTORE_OUTPUT
     )
     if (NOT NUGET_RESTORE_RESULT EQUAL 0)
         message(FATAL_ERROR "${NUGET_RESTORE_OUTPUT}")
