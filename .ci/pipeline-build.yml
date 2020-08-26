@@ -1,99 +1,60 @@
-trigger:
-  branches:
-    include:
-    - '*'
-    exclude:
-    - no-ci-*
-    - skip-ci-*
+
 variables:
-- name: CMAKE_BUILD_ARGS
-  value: ''
-- name: CMAKE_GENERATE_ARGS
-  value: ''
-- name: URHO3D_CSHARP
-  value: ON
-- name: URHO3D_SAMPLES
-  value: ON
-- name: URHO3D_PACKAGING
-  value: ON
-- name: TRACY_NO_INVARIANT_CHECK
-  value: 1
-stages:
-- stage: __default
-  jobs:
+  CMAKE_BUILD_ARGS: ""
+  CMAKE_GENERATE_ARGS: ""
+  URHO3D_CSHARP: ON
+  URHO3D_SAMPLES: ON
+  URHO3D_PACKAGING: ON
+  TRACY_NO_INVARIANT_CHECK: 1
+
+jobs:
   - job: Linux
     pool:
-      vmImage: ubuntu-latest
+      vmImage: 'ubuntu-latest'
+
     variables:
-    - name: CMAKE_GENERATE_ARGS
-      value: -G Ninja
+      CMAKE_GENERATE_ARGS: -G Ninja
+
     strategy:
       matrix:
-        shared-gcc-opengl:
-          CC: gcc-8
-          CXX: g++-8
-          BUILD_SHARED_LIBS: ON
-          EXTRA_PACKAGES: gcc-8 g++-8 mono-devel msbuild-libhostfxr msbuild-sdkresolver msbuild
         shared-clang-opengl:
           BUILD_SHARED_LIBS: ON
           CMAKE_GENERATE_ARGS: -DTRACY_NO_PARALLEL_ALGORITHMS=ON
           CC: clang-8
           CXX: clang++-8
           EXTRA_PACKAGES: clang-8 mono-devel msbuild-libhostfxr msbuild-sdkresolver msbuild
+
     steps:
-    - task: NuGetAuthenticate@0
-    - task: Bash@3
-      displayName: Add Repositories
-      inputs:
-        targetType: inline
-        script: >
+      - task: NuGetAuthenticate@0
+      - bash: |
           # Mono
-
           sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-
           echo "deb http://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
-
           # Clang
-
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-
           sudo apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main"
-    - task: Bash@3
-      displayName: CMake
-      inputs:
-        targetType: inline
-        script: >
+        displayName: 'Add Repositories'
+      - bash: |
           sudo rm -f /usr/local/bin/cmake  ; bad azure-pipelines!
-
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
-
           sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
-
           sudo apt-get update -y
-
           # Default compiler on this build worker image does not support c++17.
-
           sudo apt-get install -y --no-install-recommends cmake
-    - task: Bash@3
-      displayName: Setup
-      inputs:
-        targetType: inline
-        script: >
+        displayName: 'CMake'
+      - bash: |
           sudo apt-get install -y --no-install-recommends libasound2-dev libxrandr-dev libgl1-mesa-dev libglu1-mesa-dev uuid-dev ninja-build $(EXTRA_PACKAGES)
-
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/$(CC) 100
-
           sudo update-alternatives --set cc /usr/bin/$(CC)
-
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/$(CXX) 100
-
           sudo update-alternatives --set c++ /usr/bin/$(CXX)
-
           mkdir "$(Build.SourcesDirectory)/SDK"
-    - task: CMake@1
-      displayName: Generate
-      inputs:
-        workingDirectory: cmake-build
-        cmakeArgs: $(CMAKE_GENERATE_ARGS) -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/SDK -DCMAKE_BUILD_TYPE=RelWithDebInfo -DURHO3D_SAMPLES=ON -DURHO3D_CSHARP=$(URHO3D_CSHARP) -DURHO3D_PACKAGING=ON -DBUILD_SHARED_LIBS=$(BUILD_SHARED_LIBS) $(Build.SourcesDirectory)
+        displayName: 'Setup'
+
+      - task: CMake@1
+        displayName: Generate
+        inputs:
+          workingDirectory: cmake-build
+          cmakeArgs: $(CMAKE_GENERATE_ARGS) -DCMAKE_INSTALL_PREFIX=$(Build.SourcesDirectory)/SDK -DCMAKE_BUILD_TYPE=RelWithDebInfo -DURHO3D_SAMPLES=ON -DURHO3D_CSHARP=$(URHO3D_CSHARP) -DURHO3D_PACKAGING=ON -DBUILD_SHARED_LIBS=$(BUILD_SHARED_LIBS) $(Build.SourcesDirectory)
+    
