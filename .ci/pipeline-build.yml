@@ -42,7 +42,14 @@ jobs:
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test
           sudo apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main"
         displayName: 'Add Repositories'
-      - template: cmake.yml
+      - bash: |
+          sudo rm -f /usr/local/bin/cmake  ; bad azure-pipelines!
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
+          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+          sudo apt-get update -y
+          # Default compiler on this build worker image does not support c++17.
+          sudo apt-get install -y --no-install-recommends cmake
+        displayName: 'CMake'
       - bash: |
           sudo apt-get install -y --no-install-recommends libasound2-dev libxrandr-dev libgl1-mesa-dev libglu1-mesa-dev uuid-dev ninja-build $(EXTRA_PACKAGES)
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/$(CC) 100
