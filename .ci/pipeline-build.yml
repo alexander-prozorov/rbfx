@@ -51,6 +51,10 @@ jobs:
           sudo update-alternatives --set c++ /usr/bin/$(CXX)
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
+        
+      - task: CmdLine@2
+        inputs:
+          script: 'dotnet --version'
     
       - task: CMake@1
         displayName: Generate
