@@ -9,7 +9,8 @@ variables:
 
 jobs:
   - job: Linux
-    pool: v-aprozo
+    pool:
+      vmImage: 'ubuntu-latest'
 
     variables:
       CMAKE_GENERATE_ARGS: -G Ninja
