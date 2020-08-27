@@ -51,6 +51,8 @@ jobs:
           sudo update-alternatives --set c++ /usr/bin/$(CXX)
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
+      
+      - task: NuGetAuthenticate@0
       - task: CMake@1
         displayName: Generate
         inputs:
