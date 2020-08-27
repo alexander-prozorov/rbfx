@@ -365,7 +365,7 @@ if (URHO3D_CSHARP)
     message(STATUS ${${CMAKE_BINARY_DIR}})
     execute_process(
         COMMAND ${TERM_WORKAROUND} ${MSBUILD} ${VS_SOLUTIONS} /t:restore /m /nologo
-        /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/ /consoleloggerparameters:ErrorsOnly
+        /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/
         RESULT_VARIABLE NUGET_RESTORE_RESULT
         OUTPUT_VARIABLE NUGET_RESTORE_OUTPUT
     )
