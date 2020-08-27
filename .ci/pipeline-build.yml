@@ -52,6 +52,11 @@ jobs:
           mkdir "$(Build.SourcesDirectory)/SDK"
         displayName: 'Setup'
       
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: 'msbuild /t:restore'
+      
       - task: NuGetAuthenticate@0
       - task: CMake@1
         displayName: Generate
