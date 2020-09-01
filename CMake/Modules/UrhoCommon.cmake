@@ -363,6 +363,8 @@ if (URHO3D_CSHARP)
     message(STATUS ${MSBUILD})
     message(STATUS ${VS_SOLUTIONS})
     message(STATUS ${${CMAKE_BINARY_DIR}})
+    file(READ /home/vsts/.config/NuGet/NuGet.Config NUGET_CONFIG)
+    message(STATUS ${NUGET_CONFIG})
     execute_process(
         COMMAND ${TERM_WORKAROUND} ${MSBUILD} ${VS_SOLUTIONS} /t:restore /m /nologo /v:diag
         /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/
