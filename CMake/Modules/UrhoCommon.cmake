@@ -364,8 +364,8 @@ if (URHO3D_CSHARP)
     message(STATUS ${VS_SOLUTIONS})
     message(STATUS ${${CMAKE_BINARY_DIR}})
     execute_process(
-        COMMAND ${TERM_WORKAROUND} ${MSBUILD} ${VS_SOLUTIONS} /t:restore /m /nologo 
-        /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/ rbfx.unix.sln
+        COMMAND ${TERM_WORKAROUND} ${MSBUILD} rbfx.unix.sln /t:restore /m /nologo 
+        /p:CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}/ 
         RESULT_VARIABLE NUGET_RESTORE_RESULT
         OUTPUT_VARIABLE NUGET_RESTORE_OUTPUT
     )
